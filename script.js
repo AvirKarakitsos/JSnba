@@ -44,7 +44,7 @@ function f_stat(id){
                         +'<div id="affiche_stat'+id+'" class="affiche_stat"></div>'
 }
 
-function affiche_stat(id){
+async function affiche_stat(id){
     let select_affiche_stat = document.getElementById(`affiche_stat${id}`)
 
     let select_saison = document.getElementById(`saison${id}`)
@@ -59,7 +59,7 @@ function affiche_stat(id){
         let moyenne_reb = 0
         let total = 0
 
-        fetch('https://www.balldontlie.io/api/v1/stats?seasons[]='+val_saison+'&player_ids[]='+id+'&postseason='+val_postseason+'&per_page=100')
+        await fetch('https://www.balldontlie.io/api/v1/stats?seasons[]='+val_saison+'&player_ids[]='+id+'&postseason='+val_postseason+'&per_page=100')
         .then(response=>response.json())
         .then(base=>{
             let somme_pts = 0
@@ -96,7 +96,6 @@ function affiche_stat(id){
         .catch(err=>console.log('Error: '+err))
 
     }else if (val_postseason == 'false'){
-        let fetchStat = async() =>{
             let stat = await fetch('https://www.balldontlie.io/api/v1/season_averages?season='+val_saison+'&player_ids[]='+id)
             .then(response=>response.json())
             .catch(err=>console.log('Error: '+err))
@@ -119,8 +118,6 @@ function affiche_stat(id){
                                                     +"<li>"+Math.round(base.reb*10)/10+"</li>"
                                                 +"</ul>"
             })
-        }
-        fetchStat()
     }
 }
 
