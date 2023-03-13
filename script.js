@@ -6,7 +6,7 @@ let searchPlayer='';
 
 const fetchPlayer = async() =>{
     searchPlayer = requete.value;
-    player = await fetch('https://www.balldontlie.io/api/v1/players?search='+searchPlayer).then(res => res.json())
+    player = await fetch('https://www.balldontlie.io/api/v1/players?search='+searchPlayer).then(res => res.json()).catch(err=>console.log('Error: '+err))
     result.innerHTML = player.data.map(val => ('<div class = "block">'
                                                     +'<div class = "block_player">'
                                                         +'<ul>'
