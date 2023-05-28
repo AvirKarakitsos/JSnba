@@ -1,28 +1,32 @@
-let requete = document.getElementById('requete');
+const requete = document.getElementById('requete');
 let result = document.getElementById('resultat');
 
-let player;
+let players;
 let searchPlayer='';
 
-const fetchPlayer = async() =>{
+const fetchPlayer = async() => {
     searchPlayer = requete.value;
-    player = await fetch('https://www.balldontlie.io/api/v1/players?search='+searchPlayer).then(res => res.json()).catch(err=>console.log('Error: '+err))
-    result.innerHTML = player.data.map(val => ('<div class = "block">'
-                                                    +'<div class = "block_player">'
-                                                        +'<ul>'
-                                                            +'<li>Prenom: '+val.first_name+'</li>'
-                                                            +'<li>Nom: '+val.last_name+'</li>'
-                                                            +'<li>Position: '+val.position+'</li>'
-                                                            +'<li>Team: '+val.team.full_name+'</li>'
-                                                        +'</ul>'
-                                                        +'<div class="image">'
-                                                            +'<img src="https://fr.global.nba.com/media/img/teams/00/logos/'+val.team.abbreviation+'_logo.svg">'
-                                                        +'</div>'
-                                                        +'<button onclick="f_stat('+val.id+')">Statistiques du joueur</button>'
-                                                    +'</div>'
-                                                    +'<div class="stat stat'+val.id+'"></div>'
-                                                +'</div><br/>')
-                                        );
+    players = await fetch('https://www.balldontlie.io/api/v1/players?search='+searchPlayer).then(res => res.json()).catch(err=>console.log('Error: '+err))
+    
+    players.data.map(val => {
+        let teamAbv;
+        val.team.abbreviation === "UTA" ? teamAbv = "utah" : teamAbv = val.team.abbreviation.toLowerCase()
+        result.innerHTML += `<div class = "block">
+                            <div class = "block_player">
+                                <ul>
+                                    <li>Prenom: ${val.first_name}</li>
+                                    <li>Nom: ${val.last_name}</li>
+                                    <li>Position: ${val.position}</li>
+                                    <li>Team: ${val.team.full_name}</li>
+                                </ul>
+                                <div class="image">
+                                    <img src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${teamAbv}.png&h=200&w=200">
+                                </div>
+                                <button onclick="f_stat(${val.id})">Statistiques du joueur</button>
+                            </div>
+                            <div class="stat stat${val.id}"></div>
+                        </div><br/>`;
+    })                                              
 }
 
 function f_stat(id){
@@ -121,9 +125,12 @@ async function affiche_stat(id){
     }
 }
 
-requete.addEventListener('input',()=>{
+requete.addEventListener('keyup',() => {
     if(requete.value.length>2){
+        result.innerHTML = ""
         fetchPlayer();
+    } else {
+        result.innerHTML = ""
     }
 });
 

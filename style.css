@@ -1,15 +1,16 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-body{
+
+body {
     font-size: 1.1rem;
     text-align: center;
 }
 
-        /*barre de navigation*/
-nav{
+        /* Nav bar */
+header{
 	height: 4rem;
 	display: flex;
 	align-items: center;
