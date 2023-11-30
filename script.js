@@ -1,18 +1,33 @@
-const requete = document.getElementById('requete');
-let result = document.getElementById('resultat');
+const request = document.getElementById('request');
+let result = document.getElementById('result');
 
 let players;
 let searchPlayer='';
 
 const fetchPlayer = async() => {
     try {
-        searchPlayer = requete.value;
+        searchPlayer = request.value;
         players = await fetch('https://www.balldontlie.io/api/v1/players?search='+searchPlayer)
         players = await players.json()
 
         players.data.map(val => {
             let teamAbv;
-            val.team.abbreviation === "UTA" ? teamAbv = "utah" : teamAbv = val.team.abbreviation.toLowerCase()
+
+            switch (val.team.abbreviation) {
+                case "UTA":
+                    teamAbv = "utah"
+                    break;
+
+                case "NOP":
+                    teamAbv = "no"
+                    break;
+            
+                default:
+                    teamAbv = val.team.abbreviation.toLowerCase()
+                    break;
+            }
+
+            //val.team.abbreviation === "UTA" ? teamAbv = "utah" : teamAbv = val.team.abbreviation.toLowerCase()
 
             result.innerHTML += `<article class="block">
                                     <div class="block-player">
@@ -43,7 +58,8 @@ function playerStat(id){
                                 +'<option value="2019" >2019-2020</option>'
                                 +'<option value="2020" >2020-2021</option>'
                                 +'<option value="2021" >2021-2022</option>'
-                                +'<option value="2022" selected="selected" >Saison en cours</option>'
+                                +'<option value="2022" >2022-2023</option>'
+                                +'<option value="2023" selected="selected" >Saison en cours</option>'
                             +'</select>'
                            
                             +'<select name="postseason" id="postseason'+id+'">'
@@ -132,8 +148,8 @@ function displayStat(id){
     }
 }
 
-requete.addEventListener('keyup',() => {
-    if(requete.value.length>2){
+request.addEventListener('keyup',() => {
+    if(request.value.length>2){
         result.innerHTML = ""
         fetchPlayer();
     } else {
