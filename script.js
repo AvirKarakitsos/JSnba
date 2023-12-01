@@ -27,8 +27,6 @@ const fetchPlayer = async() => {
                     break;
             }
 
-            //val.team.abbreviation === "UTA" ? teamAbv = "utah" : teamAbv = val.team.abbreviation.toLowerCase()
-
             result.innerHTML += `<article class="block">
                                     <div class="block-player">
                                         <ul class="no-type">
@@ -37,7 +35,7 @@ const fetchPlayer = async() => {
                                             <li>Position: ${val.position}</li>
                                             <li>Team: ${val.team.full_name}</li>
                                         </ul>
-                                        <img class="image" src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${teamAbv}.png&h=200&w=200">
+                                        <img class="image" src="https://a.espncdn.com/combiner/i?img=/i/teamlogos/nba/500/${teamAbv}.png&h=200&w=200" alt="logo ${val.team.full_name}">
                                         <button onclick="playerStat(${val.id})">Statistiques du joueur</button>
                                     </div>
                                     <div class="block-stat stat${val.id}"></div>
@@ -148,12 +146,12 @@ function displayStat(id){
     }
 }
 
-request.addEventListener('keyup',() => {
-    if(request.value.length>2){
-        result.innerHTML = ""
-        fetchPlayer();
-    } else {
-        result.innerHTML = ""
-    }
+request.addEventListener('keyup',() => {  
+        if(request.value.length>2){
+            result.innerHTML = ""
+            fetchPlayer();
+        } else {
+            result.innerHTML = ""
+        }
 });
 
